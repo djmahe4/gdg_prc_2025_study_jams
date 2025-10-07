@@ -13,7 +13,7 @@ creds_dict = st.secrets["gcp_service_account"]
 
 creds = Credentials.from_service_account_info(creds_dict)
 client = gspread.authorize(creds)
-sheet = client.open_by_url(SHEET_ID).sheet1
+sheet = client.open_by_key(SHEET_ID).sheet1
 
 # Load data
 data = pd.DataFrame(sheet.get_all_records())
