@@ -12,7 +12,7 @@ scope = ["https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis
 creds_dict = st.secrets.gcp_service_account
 #st.write(creds_dict)
 if "data" not in st.session_state:
-    creds = Credentials.from_service_account_info(**creds_dict)
+    creds = Credentials.from_service_account_info(creds_dict)
     #cred["private_key"] = cred["private_key"].replace("\\n", "\n")
     client = gspread.authorize(creds)
     sheet = client.open_by_key(SHEET_ID).sheet1
