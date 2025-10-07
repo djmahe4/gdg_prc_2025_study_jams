@@ -5,7 +5,7 @@ import json
 from google.oauth2.service_account import Credentials
 
 # --- GOOGLE SHEET SETUP ---
-SHEET_URL = "https://docs.google.com/spreadsheets/d/1dlPKBqb6fNB5xp2l0uqXSW4WSmw-_hhSjJNx3CrGJnU/edit#gid=0"
+SHEET_ID = "1dlPKBqb6fNB5xp2l0uqXSW4WSmw-_hhSjJNx3CrGJnU"
 
 # Connect to Google Sheet
 scope = ["https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis.com/auth/drive"]
@@ -13,7 +13,7 @@ creds_dict = st.secrets["gcp_service_account"]
 
 creds = Credentials.from_service_account_info(creds_dict)
 client = gspread.authorize(creds)
-sheet = client.open_by_url(SHEET_URL).sheet1
+sheet = client.open_by_url(SHEET_ID).sheet1
 
 # Load data
 data = pd.DataFrame(sheet.get_all_records())
