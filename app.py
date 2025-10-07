@@ -11,12 +11,14 @@ SHEET_ID = "1dlPKBqb6fNB5xp2l0uqXSW4WSmw-_hhSjJNx3CrGJnU"
 scope = ["https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis.com/auth/drive"]
 creds_dict = st.secrets["gcp_service_account"]
 
-creds = Credentials.from_service_account_info(creds_dict)
-client = gspread.authorize(creds)
-sheet = client.open_by_key(SHEET_ID).sheet1
-
-# Load data
-data = pd.DataFrame(sheet.get_all_records())
+if "data" not in st.session_state:
+    creds = Credentials.from_service_account_info(creds_dict)
+    client = gspread.authorize(creds)
+    sheet = client.open_by_key(SHEET_ID).sheet1
+    
+    # Load data
+    data = pd.DataFrame(sheet.get_all_records())
+    st.session_state.data=data
 
 # --- CUSTOM CSS ---
 st.markdown("""
@@ -38,12 +40,12 @@ st.markdown("""
 st.markdown("<div class='leaderboard-title'>🏆 Live Leaderboard</div>", unsafe_allow_html=True)
 
 # Sorting & filtering
-st.dataframe(data.sort_values(by="Points", ascending=False), use_container_width=True)
+st.dataframe(st.session_state.data.sort_values(by="Points", ascending=False), use_container_width=True)
 
 # Optional: search/filter
 search = st.text_input("Search Player:")
 if search:
-    filtered = data[data["Name"].str.contains(search, case=False)]
+    filtered = st.session_state.data[st.session_state.data["Name"].str.contains(search, case=False)]
     st.dataframe(filtered)
 
 st.caption("Auto-updating from Google Sheets ✨")
