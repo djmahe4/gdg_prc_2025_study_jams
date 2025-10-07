@@ -1,0 +1,16 @@
+name: Update Leaderboard
+
+on:
+  schedule:
+    - cron: "0 0 * * *"   # every midnight UTC
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Update leaderboard
+        run: |
+          echo "Leaderboard auto-refresh triggered"
